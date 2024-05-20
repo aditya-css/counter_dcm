@@ -28,10 +28,29 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run DCM
+      - name: Run DCM Analyze
         uses: CQLabs/dcm-action@v1.0.8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_pat: ${{ secrets.PAT }}
           ci_key: ${{ secrets.DCM_CI_KEY }}
           email: ${{ secrets.DCM_EMAIL }}
+
+      - name: Run DCM Code Duplication
+        run:  dcm check-code-duplication --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib
+
+      - name: Run DCM Check Parameters
+        run:  dcm check-parameters --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib --monorepo
+
+      - name: Run DCM Check Unused Code & Files
+        run:  dcm check-unused-code --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib --monorepo
+      - run:  dcm check-unused-files --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib --monorepo
+
+      - name: Run DCM Check Dependencies
+        run: dcm check-dependencies --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib
+
+      - name: Run DCM Metrics Calculation
+        run: dcm calculate-metrics --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib --reporter=html
+
+      - name: Run DCM Widget Analyses
+        run: dcm analyze-widgets --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib --reporter=html

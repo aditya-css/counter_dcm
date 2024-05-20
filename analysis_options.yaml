@@ -9,6 +9,38 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+dart_code_metrics:
+  monorepo: true
+  extends:
+    - package:dart_code_metrics_presets/all.yaml
+    - recommended
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 4
+    maximum-nesting-level: 5
+    weight-of-class: 0.33
+    tight-class-cohesion: 0.33
+    weighted-methods-per-class: 35
+    response-for-class: 55
+    coupling-between-object-classes: 12
+    number-of-added-methods: 10
+    depth-of-inheritance-tree: 5
+    widgets-nesting-level: 10
+    source-lines-of-code: 50
+    number-of-used-widgets: 20
+    maintainability-index: 50
+    lines-of-code: 100
+    halstead-volume: 150
+    technical-debt:
+      threshold: 1
+      todo-cost: 161
+      ignore-cost: 320
+      ignore-for-file-cost: 396
+      as-dynamic-cost: 322
+      deprecated-annotations-cost: 37
+      file-nullsafety-migration-cost: 41
+      unit-type: "INR"
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`

@@ -1,0 +1,39 @@
+name: code-quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Install Dart and Flutter
+        uses: subosito/flutter-action@v2.13.0
+        with:
+          flutter-version: '3.16.5'
+          cache: true
+          cache-key: 'flutter-macos-stable-3.16.5-apple'
+          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.16.5-apple'
+          pub-cache-key: 'flutter-pub-macos-stable-3.16.5-apple'
+
+      - name: Install dependencies
+        run: flutter clean && flutter pub get
+
+      - name: Install DCM
+        uses: CQLabs/setup-dcm@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run DCM
+        uses: CQLabs/dcm-action@v1.0.8
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_pat: ${{ secrets.PAT }}
+          ci_key: ${{ secrets.DCM_CI_KEY }}
+          email: ${{ secrets.DCM_EMAIL }}
